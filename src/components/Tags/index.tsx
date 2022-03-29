@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TagInput } from 'evergreen-ui';
-import { css } from 'styled-components';
+import styled from 'styled-components';
 interface TagsProps {
   values?: string[];
   onChange?: (tags: string[]) => void;
@@ -17,6 +17,16 @@ interface TagsProps {
   sm?: boolean;
   isRemovable?: boolean;
 }
+const StyledTagInput = styled(TagInput)`
+  &.tag-input-style{
+    border:none;
+  }
+  strong{
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+`
+
 const Tags = ({
   values,
   onChange,
@@ -60,10 +70,9 @@ const Tags = ({
     isRemovable: isRemovable,
   };
   return (
-    <TagInput
+    <StyledTagInput
+      className="tag-input-style"
       inputProps={{
-        border: 'none !important',
-        outline: 'none',
         display: 'none',
         //remove input border
       }}
