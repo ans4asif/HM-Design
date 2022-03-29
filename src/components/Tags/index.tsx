@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TagInput } from 'evergreen-ui';
-import styled from 'styled-components';
+import { StyledTagInput } from './Tags.styles';
 interface TagsProps {
   values?: string[];
   onChange?: (tags: string[]) => void;
@@ -8,24 +7,18 @@ interface TagsProps {
   variant?:
     | 'default'
     | 'primary'
-    | 'success'
     | 'warning'
     | 'secondary'
-    | 'danger'
-    | 'info'
-    | 'tertiary';
+    | 'tertiary'
+    | 'default-light'
+    | 'primary-light'
+    | 'warning-light'
+    | 'secondary-light'
+    | 'tertiary-light';
   sm?: boolean;
   isRemovable?: boolean;
+  disabled?: boolean;
 }
-const StyledTagInput = styled(TagInput)`
-  &.tag-input-style{
-    border:none;
-  }
-  strong{
-    padding-left: 15px;
-    padding-right: 10px;
-  }
-`
 
 const Tags = ({
   values,
@@ -34,6 +27,7 @@ const Tags = ({
   variant,
   sm,
   isRemovable,
+  disabled,
 }: TagsProps): JSX.Element => {
   const [valuez, setValues] = useState(['Label']);
   const sharedProps = {
@@ -68,13 +62,14 @@ const Tags = ({
     borderRadius: '25px',
     fontWeight: 'bold',
     isRemovable: isRemovable,
+    disabled: disabled,
   };
   return (
     <StyledTagInput
       className="tag-input-style"
+      $variant={variant}
       inputProps={{
         display: 'none',
-        //remove input border
       }}
       values={valuez}
       tagProps={sharedProps}
