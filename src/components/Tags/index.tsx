@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyledTagInput } from './Tags.styles';
 interface TagsProps {
-  values?: string[];
+  value?: string | number;
   onChange?: (tags: string[]) => void;
   inputProps?: object;
   variant?:
@@ -14,22 +14,24 @@ interface TagsProps {
     | 'primary-light'
     | 'warning-light'
     | 'secondary-light'
+    | 'success'
+    | 'skeleton'
     | 'tertiary-light';
   sm?: boolean;
   isRemovable?: boolean;
   disabled?: boolean;
 }
 
-const Tags = ({
-  values,
+const Tags: React.FC<TagsProps> = ({
+  value,
   onChange,
   inputProps,
   variant,
   sm,
   isRemovable,
   disabled,
-}: TagsProps): JSX.Element => {
-  const [valuez, setValues] = useState(['Label']);
+}): JSX.Element => {
+  const [values, setValues] = useState([value]);
   const sharedProps = {
     color:
       variant === 'default'
@@ -42,6 +44,8 @@ const Tags = ({
         ? '#FF4E35'
         : variant === 'tertiary'
         ? '#00B0F0'
+        : variant === 'success'
+        ? '#00B53F'
         : '#17a2b8',
     background:
       variant === 'default'
@@ -54,6 +58,8 @@ const Tags = ({
         ? '##940FFB'
         : variant === 'warning'
         ? '#FF4E35'
+        : variant === 'success'
+        ? '#00B53F'
         : '#17a2b8',
     height: sm ? '25px' : '32px',
     fontSize: sm ? '14px' : '16px',
@@ -71,10 +77,10 @@ const Tags = ({
       inputProps={{
         display: 'none',
       }}
-      values={valuez}
+      values={values}
       tagProps={sharedProps}
-      onChange={(tags: string[]) => {
-        setValues(tags);
+      onChange={(tag: string[]) => {
+        setValues(tag);
       }}
     />
   );
