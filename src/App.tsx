@@ -1,13 +1,18 @@
-import React from 'react';
-import './App.css';
-import StyledSkeleton from './components/Skeleton';
-import Tags from './components/Tags';
+import React from "react";
+import "./App.css";
+import InputDropdown from "./components/InputDropdown";
+import StyledSkeleton from "./components/Skeleton";
+import Tags from "./components/Tags";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function App() {
+  const theme = createTheme();
   return (
     <>
-      <div className="App">
-        <h4>static Tags</h4>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <InputDropdown placeholder="invite user" />
+          {/* <h4>static Tags</h4>
         <Tags variant="primary-light" value="Label" />
         <Tags variant="secondary-light" value="Label" />
         <Tags variant="tertiary-light" value="Label" />
@@ -61,8 +66,9 @@ function App() {
           <h4>skeleton</h4>
 
           <StyledSkeleton type="tags" />
+        </div> */}
         </div>
-      </div>
+      </ThemeProvider>
     </>
   );
 }
