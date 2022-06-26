@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Sofia Pro, sans-serif !important",
   },
   textField: {
+    minWidth: "168px !important",
     width: "100%",
     flexGrow: 1,
     padding: "0px 8px !important",
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   selectHolder: {
     display: "flex",
     alignItems: "center",
-    gap: "132px",
+    gap: "60px",
     "&:nth-child(2)": {
       marginRight: "10px",
     },
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   select: {
-    minWidth: "200px",
+    minWidth: "168px",
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
       //   #6E7582
