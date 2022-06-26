@@ -1,72 +1,80 @@
 import React from "react";
 import "./App.css";
 import InputDropdown from "./components/InputDropdown";
-import StyledSkeleton from "./components/Skeleton";
-import Tags from "./components/Tags";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { MyTheme } from "./theme";
+import Menu from "./components/Menu";
+import { AddAlarm } from "@mui/icons-material";
 
 function App() {
-  const theme = createTheme();
+  const theme = createTheme(MyTheme);
+  const options = [
+    { value: "member", label: "member" },
+    { value: "admin", label: "admin" },
+  ];
+  const onAddUser: any = ({
+    searchText,
+    role,
+  }: {
+    searchText: string;
+    role: string;
+  }) => {
+    console.log({ searchText, role });
+  };
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <InputDropdown placeholder="invite user" />
-          {/* <h4>static Tags</h4>
-        <Tags variant="primary-light" value="Label" />
-        <Tags variant="secondary-light" value="Label" />
-        <Tags variant="tertiary-light" value="Label" />
-        <Tags variant="warning-light" value="Label" />
-        <Tags variant="default-light" value="Label" />
+          <div className="container">
+            <InputDropdown
+              placeholder="clarisse.anne.medallo@pwc.com.ph"
+              options={options}
+              onAddUser={onAddUser}
+            />
+          </div>
+          <div className="holder">
+            <div className="box">
+              <Menu
+                mode="secondary"
+                startIcon={<AddAlarm />}
+                width={3}
+                placement="left"
+                options={["option1", "option2", "option3"]}
+                onClick={(option: string | undefined) => console.log(option)}
+              />
 
-        <div className="App">
-          <Tags variant="primary" value="Label" />
-          <Tags variant="secondary" value="Label" />
-          <Tags variant="tertiary" value="Label" />
-          <Tags variant="warning" value="Label" />
-          <Tags variant="default" value="Label" />
-        </div>
-        <div className="App">
-          <Tags variant="primary" disabled value="Label" />
-          <Tags variant="secondary" disabled value="Label" />
-          <Tags variant="tertiary" disabled value="Label" />
-          <Tags variant="warning" disabled value="Label" />
-          <Tags variant="default" disabled value="Label" />
-        </div>
+              <Menu
+                mode="secondary"
+                startIcon={<AddAlarm />}
+                width={3}
+                placement="left"
+                options={["option1", "option2", "option3"]}
+                onClick={(option: string | undefined) => console.log(option)}
+              />
+            </div>
+          </div>
+          <div className="holder">
+            <div className="box flex-row">
+              <Menu
+                mode="secondary"
+                startIcon={<AddAlarm />}
+                width={3}
+                placement="bottom"
+                options={["option1", "option2", "option3"]}
+                onClick={(option: string | undefined) => console.log(option)}
+              />
 
-        <h4>removable Tags</h4>
-        <Tags variant="primary-light" isRemovable value="Label" />
-        <Tags variant="secondary-light" isRemovable value="Label" />
-        <Tags variant="tertiary-light" isRemovable value="Label" />
-        <Tags variant="warning-light" isRemovable value="Label" />
-        <Tags variant="default-light" isRemovable value="Label" />
-
-        <div className="App">
-          <Tags variant="primary" isRemovable value="Label" />
-          <Tags variant="secondary" isRemovable value="Label" />
-          <Tags variant="tertiary" isRemovable value="Label" />
-          <Tags variant="warning" isRemovable value="Label" />
-          <Tags variant="default" isRemovable value="Label" />
-        </div>
-        <div className="App">
-          <Tags variant="primary" isRemovable disabled value="Label" />
-          <Tags variant="secondary" isRemovable disabled value="Label" />
-          <Tags variant="tertiary" isRemovable disabled value="Label" />
-          <Tags variant="warning" isRemovable disabled value="Label" />
-          <Tags variant="default" isRemovable disabled value="Label" />
-        </div>
-        <div className="App">
-          <h4>hover/enabled</h4>
-
-          <Tags variant="success" isRemovable value="Label" />
-          <Tags variant="success" isRemovable disabled value="Label" />
-          <Tags variant="success" value="Label" />
-        </div>
-        <div className="App">
-          <h4>skeleton</h4>
-
-          <StyledSkeleton type="tags" />
-        </div> */}
+              <Menu
+                mode="secondary"
+                startIcon={<AddAlarm />}
+                width={3}
+                placement="bottom"
+                options={["option1", "option2", "option3"]}
+                onClick={(option: string | undefined) => console.log(option)}
+              />
+            </div>
+          </div>
         </div>
       </ThemeProvider>
     </>
