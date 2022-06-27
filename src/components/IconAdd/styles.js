@@ -18,7 +18,7 @@ const styles = makeStyles({
       color: "rgba(255, 255, 255, 0.12)",
       /* hm/read-only/light/focus */
 
-      border: "1px solid #0088FF",
+      boxShadow:"0 0 2px #0088FF !important",
     },
   },
   disabled: {

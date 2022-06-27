@@ -10,13 +10,13 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Sofia Pro, sans-serif !important",
   },
   textField: {
-    minWidth: "168px !important",
+    minWidth: "125px !important",
     width: "100%",
     flexGrow: 1,
     padding: "0px 8px !important",
     borderRight: "1px solid rgba(159, 166, 180, 0.4) !important",
     fontFamily: "Poppins",
-    marginLeft: "18px !important",
+    marginLeft: "10px !important",
     "& div:first-child": {
       "&:hover": {
         "&:before": {
@@ -30,11 +30,13 @@ const useStyles = makeStyles((theme) => ({
         border: "none",
       },
     },
+    [theme.breakpoints.down(574)]: {
+      minWidth: "125px !important",
+    }
   },
   selectHolder: {
     display: "flex",
     alignItems: "center",
-    gap: "60px",
     "&:nth-child(2)": {
       marginRight: "10px",
     },
@@ -63,11 +65,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   select: {
-    minWidth: "168px",
+    minWidth: "150px",
+    marginRight: "60px",
+    textAlign: "left",
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
       //   #6E7582
     },
+    [theme.breakpoints.down(574)]: {
+      minWidth: "130px",
+      marginRight: "5px",    }
   },
 }));
 export default useStyles;
