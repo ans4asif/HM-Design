@@ -14,12 +14,14 @@ type Props = {
   width?: number;
   placement?: "bottom" | "left";
   options: string[];
+  name: string;
   onClick: (option: string | undefined) => void;
 };
 const Menu: React.FC<Props> = ({
   startIcon,
   placement,
   options,
+  name,
   onClick,
   ...props
 }) => {
@@ -75,7 +77,7 @@ const Menu: React.FC<Props> = ({
         className={menuBtn}
         startIcon={startIcon}
       >
-        option 1
+        {name}
       </Button>
       <Popper
         open={open}
