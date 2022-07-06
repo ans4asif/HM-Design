@@ -7,27 +7,40 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import useStyles from "./styles";
 import Button from "@mui/material/Button";
+import { ArrowDropDown } from "@mui/icons-material";
 
 type Props = {
   startIcon?: React.ReactElement;
-  mode?: "primary" | "secondary";
+  showEndIcon?: boolean;
   width?: number;
   placement?: "bottom" | "left";
   options: string[];
-  name: string;
+  dropDownWidth?: number;
+  disabled?: boolean;
   onClick: (option: string | undefined) => void;
+  variant: "light" | "dark";
 };
 const Menu: React.FC<Props> = ({
   startIcon,
+  showEndIcon,
   placement,
   options,
-  name,
+  dropDownWidth,
   onClick,
+  disabled,
+  variant,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const { menuBtn, paper } = useStyles({ placement, ...props })();
+  console.log({ variant });
+  const { menuBtn, paper } = useStyles({
+    placement,
+    variant,
+    disabled,
+    dropDownWidth,
+    ...props,
+  })();
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -60,7 +73,7 @@ const Menu: React.FC<Props> = ({
       anchorRef.current!.focus();
     }
 
-    prevOpen.current = open;
+    // prevOpen.current = open;
   }, [open]);
 
   return (
@@ -73,11 +86,12 @@ const Menu: React.FC<Props> = ({
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        disabled={false}
+        disabled={disabled}
         className={menuBtn}
         startIcon={startIcon}
+        endIcon={showEndIcon ? <ArrowDropDown /> : undefined}
       >
-        {name}
+        {props.children}
       </Button>
       <Popper
         open={open}

@@ -15,10 +15,13 @@ export const MyTheme = (mode = "light") => {
         black: "rgba(27, 27, 27, 1)",
         white: "#fff",
         on_surface: " rgba(28, 27, 30, 0.15)",
+        disabledWhite: "rgba(255, 255, 255, 0.5)",
       },
       light: {
         focus: "rgba(255, 255, 255, 0.12)",
         secondary: mode === "dark" ? "#021434" : "blue",
+        secondaryContainer: "rgba(236, 243, 252, 0.12)",
+        outline: "#C9CBD1",
       },
       background: { paper: "#fff", default: "#fafafa" },
       primary: {
@@ -33,6 +36,12 @@ export const MyTheme = (mode = "light") => {
         main: "rgba(2, 20, 52, 1)",
         dark: "rgba(159, 166, 180, 1)",
         contrastText: "rgba(255, 255, 255, 1)",
+      },
+      readOnly: {
+        light: {
+          secondary: "rgba(2, 20, 52, 0.12)",
+          secondaryHover: "#374761",
+        },
       },
       error: {
         light: "rgba(255, 215, 215, 1)",

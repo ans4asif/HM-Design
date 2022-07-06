@@ -6,26 +6,30 @@ import Menu from "../Menu";
 const MenuHolder = () => {
   const classes = useStyles();
   return (
-    <div className={[classes.box].join(" ")}>
+    <div className={[classes.boxx].join(" ")}>
       <Menu
-        mode="secondary"
-        startIcon={<AddAlarm />}
-        name="option1"
+        variant="dark"
         width={3}
+        dropDownWidth={3}
         placement="bottom"
         options={["option1", "option2", "option3"]}
         onClick={(option: string | undefined) => console.log(option)}
-      />
+      >
+        variant 2
+      </Menu>
 
       <Menu
-        mode="secondary"
+        variant="dark"
         startIcon={<AddAlarm />}
+        showEndIcon
         width={3}
-        name="option4"
+        dropDownWidth={3}
         placement="bottom"
         options={["option1", "option2", "option3"]}
         onClick={(option: string | undefined) => console.log(option)}
-      />
+      >
+        option 2
+      </Menu>
     </div>
   );
 };

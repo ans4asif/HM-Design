@@ -7,7 +7,6 @@ import Menu from "./components/Menu";
 import { AddAlarm } from "@mui/icons-material";
 import useStyles from "./App.styles";
 import MenuHolder from "./components/MenuHolder";
-import { FormControlLabel, Switch } from "@mui/material";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -30,15 +29,6 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <FormControlLabel
-            label="Toggle Mode"
-            control={
-              <Switch
-                checked={mode === "dark"}
-                onChange={() => setMode(mode === "light" ? "dark" : "light")}
-              />
-            }
-          />
           <div className="container">
             <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
@@ -49,24 +39,28 @@ function App() {
           <div className="holder">
             <div className="box">
               <Menu
-                mode="secondary"
-                startIcon={<AddAlarm />}
+                variant="light"
                 width={3}
-                placement="left"
+                showEndIcon
+                dropDownWidth={3}
+                placement="bottom"
                 options={["option1", "option2", "option3"]}
-                name="option1"
                 onClick={(option: string | undefined) => console.log(option)}
-              />
+              >
+                label
+              </Menu>
 
               <Menu
-                mode="secondary"
-                startIcon={<AddAlarm />}
+                variant="light"
+                // startIcon={<AddAlarm />}
                 width={3}
-                name="option2"
-                placement="left"
+                placement="bottom"
+                dropDownWidth={3}
                 options={["option1", "option2", "option3"]}
                 onClick={(option: string | undefined) => console.log(option)}
-              />
+              >
+                option 2
+              </Menu>
             </div>
           </div>
           <div className="holder">
