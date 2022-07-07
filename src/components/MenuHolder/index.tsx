@@ -9,7 +9,6 @@ const MenuHolder = () => {
     <div className={[classes.boxx].join(" ")}>
       <Menu
         variant="dark"
-        width={3}
         dropDownWidth={3}
         placement="bottom"
         options={["option1", "option2", "option3"]}
@@ -22,7 +21,6 @@ const MenuHolder = () => {
         variant="dark"
         startIcon={<AddAlarm />}
         showEndIcon
-        width={3}
         dropDownWidth={3}
         placement="bottom"
         options={["option1", "option2", "option3"]}

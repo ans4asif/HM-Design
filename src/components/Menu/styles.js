@@ -16,7 +16,7 @@ const useStyles = (props) => {
           : "",
       alignItems: "center !important",
       justifyContent: "start !important",
-      width: `${width * 56}px`,
+      width: width ? `${width * 56}px` : "100%",
       color: `${
         variant === "dark"
           ? theme.palette.common.white
@@ -43,7 +43,7 @@ const useStyles = (props) => {
         } !important`,
       },
       "& .MuiButton-endIcon": {
-        position: "absolute",
+        // position: "absolute",
         right: "10px",
       },
     },
@@ -52,9 +52,9 @@ const useStyles = (props) => {
       border: `1px solid ${theme.palette.primary.light}`,
       marginRight: `${placement === "left" ? "10px" : "0px"} !important`,
       marginTop: `${placement !== "left" ? "10px" : "0px"} !important`,
-
-      maxWidth: "280px",
-      width: `${dropDownWidth * 56}px`,
+      zIndex: "10 !important",
+      maxWidth: "280px !important",
+      width: dropDownWidth ? `${dropDownWidth * 56}px` : "100%",
       boxShadow:
         "0px 8px 15px rgba(110, 117, 130, 0.15), 0px 1px 2px rgba(110, 117, 130, 0.3)",
       borderRadius: "3px",

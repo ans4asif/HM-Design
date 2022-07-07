@@ -40,7 +40,6 @@ function App() {
             <div className="box">
               <Menu
                 variant="light"
-                width={3}
                 showEndIcon
                 dropDownWidth={3}
                 placement="bottom"
@@ -63,9 +62,21 @@ function App() {
               </Menu>
             </div>
           </div>
+
           <div className="holder">
             <MenuHolder />
           </div>
+          <Menu
+            variant="dark"
+            // width={3}
+            showEndIcon
+            dropDownWidth={3}
+            placement="bottom"
+            options={["option1", "option2", "option3"]}
+            onClick={(option: string | undefined) => console.log(option)}
+          >
+            label
+          </Menu>
         </div>
       </ThemeProvider>
     </>
