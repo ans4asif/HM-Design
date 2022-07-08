@@ -34,7 +34,7 @@ const Menu: React.FC<Props> = ({
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   console.log({ variant });
-  const { menuBtn, paper } = useStyles({
+  const { menuBtn, paper, textHolder, text, popper } = useStyles({
     placement,
     variant,
     disabled,
@@ -88,14 +88,21 @@ const Menu: React.FC<Props> = ({
         onClick={handleToggle}
         disabled={disabled}
         className={menuBtn}
-        startIcon={startIcon}
-        endIcon={showEndIcon ? <ArrowDropDown /> : undefined}
+        // startIcon={startIcon}
+        // endIcon={showEndIcon ? <ArrowDropDown /> : undefined}
       >
-        {props.children}
+        <div className={textHolder}>
+          <span className={text}>
+            {startIcon && startIcon}
+            <span> {props.children}</span>
+          </span>
+          {showEndIcon ? <ArrowDropDown /> : undefined}
+        </div>
       </Button>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
+        className={popper}
         role={undefined}
         placement={`${placement === "left" ? "left-start" : "bottom-start"}`}
         transition

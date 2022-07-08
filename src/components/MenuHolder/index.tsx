@@ -9,7 +9,7 @@ const MenuHolder = () => {
     <div className={[classes.boxx].join(" ")}>
       <Menu
         variant="dark"
-        dropDownWidth={3}
+        width={5}
         placement="bottom"
         options={["option1", "option2", "option3"]}
         onClick={(option: string | undefined) => console.log(option)}
@@ -21,7 +21,7 @@ const MenuHolder = () => {
         variant="dark"
         startIcon={<AddAlarm />}
         showEndIcon
-        dropDownWidth={3}
+        width={5}
         placement="bottom"
         options={["option1", "option2", "option3"]}
         onClick={(option: string | undefined) => console.log(option)}

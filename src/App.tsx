@@ -41,7 +41,8 @@ function App() {
               <Menu
                 variant="light"
                 showEndIcon
-                dropDownWidth={3}
+                // dropDownWidth={3}
+                width={5}
                 placement="bottom"
                 options={["option1", "option2", "option3"]}
                 onClick={(option: string | undefined) => console.log(option)}
@@ -51,10 +52,11 @@ function App() {
 
               <Menu
                 variant="light"
-                // startIcon={<AddAlarm />}
-                width={3}
+                startIcon={<AddAlarm />}
+                showEndIcon
+                width={5}
                 placement="bottom"
-                dropDownWidth={3}
+                // dropDownWidth={3}
                 options={["option1", "option2", "option3"]}
                 onClick={(option: string | undefined) => console.log(option)}
               >
@@ -66,17 +68,6 @@ function App() {
           <div className="holder">
             <MenuHolder />
           </div>
-          <Menu
-            variant="dark"
-            // width={3}
-            showEndIcon
-            dropDownWidth={3}
-            placement="bottom"
-            options={["option1", "option2", "option3"]}
-            onClick={(option: string | undefined) => console.log(option)}
-          >
-            label
-          </Menu>
         </div>
       </ThemeProvider>
     </>

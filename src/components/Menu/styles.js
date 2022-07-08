@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = (props) => {
   const { width, placement, variant, dropDownWidth } = props;
+  console.log({ dropDownWidth });
   return makeStyles((theme) => ({
     focusVisible: {
       background: "red !important",
@@ -44,8 +45,24 @@ const useStyles = (props) => {
       },
       "& .MuiButton-endIcon": {
         // position: "absolute",
-        right: "10px",
+        // right: "10px",
       },
+    },
+    textHolder: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "100%",
+    },
+    text: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: "5px",
+    },
+    popper: {
+      maxWidth: "280px !important",
+      width: "100% !important",
     },
     paper: {
       background: `${theme.palette.primary.surfaceVariant} !important`,
@@ -54,7 +71,10 @@ const useStyles = (props) => {
       marginTop: `${placement !== "left" ? "10px" : "0px"} !important`,
       zIndex: "10 !important",
       maxWidth: "280px !important",
-      width: dropDownWidth ? `${dropDownWidth * 56}px` : "100%",
+      width:
+        dropDownWidth && dropDownWidth > 0
+          ? `${dropDownWidth * 56}px !important`
+          : "100% !important",
       boxShadow:
         "0px 8px 15px rgba(110, 117, 130, 0.15), 0px 1px 2px rgba(110, 117, 130, 0.3)",
       borderRadius: "3px",

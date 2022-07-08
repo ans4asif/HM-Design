@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down(574)]: {
       minWidth: "125px !important",
-    }
+    },
   },
   selectHolder: {
     display: "flex",
@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "3px",
     "& ul": {
       backgroundColor: "#F8F9FA",
-      border: "1px solid green",
     },
     "& li": {
       padding: "6px 16px",
@@ -74,7 +73,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down(574)]: {
       minWidth: "130px",
-      marginRight: "5px",    }
+      marginRight: "5px",
+    },
   },
 }));
 export default useStyles;
