@@ -65,7 +65,15 @@ const useStyles = (props) => {
       width: "100% !important",
     },
     paper: {
-      background: `${theme.palette.primary.surfaceVariant} !important`,
+      background:
+        variant === "dark"
+          ? `${theme.palette.secondary.light} !important`
+          : `${theme.palette.primary.surfaceVariant} !important`,
+      color: `${
+        variant === "dark"
+          ? theme.palette.common.white
+          : theme.palette.common.black
+      } !important`,
       border: `1px solid ${theme.palette.primary.light}`,
       marginRight: `${placement === "left" ? "10px" : "0px"} !important`,
       marginTop: `${placement !== "left" ? "10px" : "0px"} !important`,
@@ -82,7 +90,10 @@ const useStyles = (props) => {
         fontSize: "14px",
         margin: "2px 0",
         "&:hover": {
-          background: theme.palette.readOnly.light.secondary,
+          background:
+            variant === "dark"
+              ? `${theme.palette.readOnly.light.secondaryHover} !important`
+              : theme.palette.readOnly.light.secondary,
         },
       },
     },
