@@ -22,6 +22,8 @@ export const MyTheme = (mode = "light") => {
         secondary: mode === "dark" ? "#021434" : "blue",
         secondaryContainer: "rgba(236, 243, 252, 0.12)",
         outline: "#C9CBD1",
+        on_surface: "#021434",
+        on_surface_variant: "#6E7582",
       },
       background: { paper: "#fff", default: "#fafafa" },
       primary: {

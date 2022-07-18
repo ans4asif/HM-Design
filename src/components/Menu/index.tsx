@@ -33,7 +33,6 @@ const Menu: React.FC<Props> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
-  console.log({ variant });
   const { menuBtn, paper, textHolder, text, popper } = useStyles({
     placement,
     variant,

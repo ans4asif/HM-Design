@@ -7,6 +7,7 @@ import Menu from "./components/Menu";
 import { AddAlarm } from "@mui/icons-material";
 import useStyles from "./App.styles";
 import MenuHolder from "./components/MenuHolder";
+import VerticalStepper from "./components/Stepper";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -30,13 +31,14 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App">
           <div className="container">
-            <InputDropdown
+            {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}
               onAddUser={onAddUser}
-            />
+            /> */}
+            <VerticalStepper />
           </div>
-          <div className="holder">
+          {/* <div className="holder">
             <div className="box">
               <Menu
                 variant="light"
@@ -67,7 +69,7 @@ function App() {
 
           <div className="holder">
             <MenuHolder />
-          </div>
+          </div> */}
         </div>
       </ThemeProvider>
     </>
