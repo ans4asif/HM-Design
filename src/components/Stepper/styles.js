@@ -151,7 +151,9 @@ const useStyles = (props) => {
         color: '#5CA7D4',
         cursor: 'pointer',
       },
-
+      '& p': {
+        marginBottom: '32px',
+      },
       '& button': {
         position: 'absolute',
         right: '0px',
