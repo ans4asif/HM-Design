@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import "./App.css";
-import InputDropdown from "./components/InputDropdown";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { MyTheme } from "./theme";
-import Menu from "./components/Menu";
-import { AddAlarm } from "@mui/icons-material";
-import useStyles from "./App.styles";
-import MenuHolder from "./components/MenuHolder";
-import VerticalStepper from "./components/Stepper";
+import React, { useState } from 'react';
+import './App.css';
+import InputDropdown from './components/InputDropdown';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { MyTheme } from './theme';
+import Menu from './components/Menu';
+import { AddAlarm } from '@mui/icons-material';
+import useStyles from './App.styles';
+import MenuHolder from './components/MenuHolder';
+import VerticalStepper from './components/Stepper';
 
 function App() {
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState('light');
   const theme = createTheme(MyTheme(mode));
   const options = [
-    { value: "member", label: "member" },
-    { value: "admin", label: "admin" },
+    { value: 'member', label: 'member' },
+    { value: 'admin', label: 'admin' },
   ];
   const onAddUser: any = ({
     searchText,
@@ -25,12 +25,11 @@ function App() {
   }) => {
     console.log({ searchText, role });
   };
-  console.log({ theme });
   return (
     <>
       <ThemeProvider theme={theme}>
-        <div className="App">
-          <div className="container">
+        <div className='App'>
+          <div className='container'>
             {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}
