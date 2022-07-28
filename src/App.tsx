@@ -8,7 +8,7 @@ import { AddAlarm } from '@mui/icons-material';
 import useStyles from './App.styles';
 import MenuHolder from './components/MenuHolder';
 import VerticalStepper from './components/Stepper';
-
+import { Questionnaire } from './components/Stepper/types';
 function App() {
   const [mode, setMode] = useState('light');
   const theme = createTheme(MyTheme(mode));
@@ -25,17 +25,93 @@ function App() {
   }) => {
     console.log({ searchText, role });
   };
+  const myQuestionaire: Questionnaire = {
+    slug: 'my questionaire',
+    uuid: 'my questionaire',
+    questions: [
+      {
+        uuid: 'question1',
+        label: 'question1',
+        instructions: 'This question is about you',
+        type: 'freeForm',
+        prompt: 'What is your name?',
+        validation: {
+          required: true,
+          maxLength: 5,
+        },
+      },
+      {
+        uuid: 'question2',
+        label: 'question2',
+        instructions: 'This question is about you',
+        type: 'toggle',
+        prompt: 'What is your name?',
+        validation: {
+          required: true,
+        },
+      },
+
+      {
+        uuid: 'question3',
+        label: 'question3',
+        instructions: 'This question is single select',
+        type: 'singleSelection',
+        options: [
+          {
+            label: 'option1',
+            value: 'option1',
+          },
+          {
+            label: 'option2',
+            value: 'option2',
+          },
+          {
+            label: 'option3',
+            value: 'option3',
+          },
+        ],
+        validation: {
+          required: true,
+        },
+      },
+      {
+        uuid: 'question4',
+        label: 'question4',
+        instructions: 'This question is multiselect ',
+        type: 'multipleSelection',
+        options: [
+          {
+            label: 'option1',
+            value: 'option1',
+          },
+          {
+            label: 'option2',
+            value: 'option2',
+          },
+          {
+            label: 'option3',
+            value: 'option3',
+          },
+        ],
+        validation: {
+          required: true,
+          minItems: 2,
+          maxItems: 3,
+        },
+      },
+    ],
+  };
   return (
     <>
       <ThemeProvider theme={theme}>
         <div className='App'>
           <div className='container'>
+            <VerticalStepper questionnaire={myQuestionaire} />
             {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}
               onAddUser={onAddUser}
             /> */}
-            <VerticalStepper />
           </div>
           {/* <div className="holder">
             <div className="box">
