@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -14,6 +14,7 @@ import Switch from '@mui/material/Switch';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CustomSelect from '../CustomSelect';
 import MultiSelect from '../CustomSelect/MultiSelect';
+import { FormHelperText } from '@mui/material';
 
 const steps: Array<{
   label: string;
@@ -58,13 +59,17 @@ const steps: Array<{
 type Props = {
   variant?: 'dark' | 'light';
   questionnaire: Questionnaire;
+  onFinish: (values: any) => void;
 };
 const VerticalStepper: React.FC<Props> = ({
   variant,
+  onFinish = () => {},
   questionnaire,
   ...props
 }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [errors, setErrors] = useState<any>({});
+  const [state, setState] = useState<any>({});
   const stepperRef = useRef<HTMLDivElement>(null);
   const { questions } = questionnaire;
   const {
@@ -83,14 +88,45 @@ const VerticalStepper: React.FC<Props> = ({
     btnNext,
     stepperBox,
     finishTextHolder,
+    textField,
+    toggleHolder,
+    errorMsg,
   } = useStyles({
     activeStep,
     totalSteps: questions?.length,
     variant,
   })();
-  console.log({ questions });
+
+  const isQuestionValid = () => {
+    let isValid = true;
+    let myError: any = {};
+    const question = questions[activeStep];
+    const { label, validation } = question;
+    const value = state[label!];
+    const { required, maxLength, minItems, maxItems } = validation;
+    if (required && !value) {
+      isValid = false;
+      myError[label!] = 'This field is required';
+    } else if (maxLength && value.length > maxLength) {
+      isValid = false;
+      myError[label!] = `This field must be less than ${maxLength} characters`;
+    } else if (minItems && value.length < minItems) {
+      isValid = false;
+      myError[label!] = `Minimum ${minItems} items must be selected`;
+    } else if (maxItems && value.length > maxItems) {
+      isValid = false;
+      myError[label!] = `Maximum ${maxItems} items can be selected`;
+    }
+    setErrors(myError);
+    return isValid;
+  };
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (isQuestionValid()) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (isQuestionValid() && activeStep === questions.length - 1) {
+      onFinish(state);
+    }
   };
 
   const handleBack = () => {
@@ -99,6 +135,8 @@ const VerticalStepper: React.FC<Props> = ({
 
   const handleReset = () => {
     setActiveStep(0);
+    setState({});
+    setErrors({});
   };
 
   const handleStepperSteps = () => {
@@ -151,45 +189,141 @@ const VerticalStepper: React.FC<Props> = ({
         } else {
           connectorArray[1].style.display = 'block';
         }
-        if (activeStep < 2) {
+        if (activeStep < 2 && connectorArray.length > 2) {
           connectorArray[2].style.display = 'none';
           if (connectorArray[3]) {
             connectorArray[3].style.display = 'none';
           }
-        } else {
+        } else if (connectorArray.length > 2) {
           connectorArray[2].style.display = 'block';
           if (connectorArray[3]) {
             connectorArray[3].style.display = 'block';
           }
         }
       }
+      for (let i = 0; i < connectorArray.length; i++) {
+        if (activeStep < 2 && i >= 4) {
+          connectorArray[i].style.display = 'none';
+        } else if (activeStep === 2 && i >= 2) {
+          connectorArray[i].style.display = 'none';
+        } else if (activeStep > 2 && i >= activeStep) {
+          connectorArray[i].style.display = 'none';
+        } else if (activeStep > 2 && i < activeStep && i >= 2) {
+          connectorArray[i].style.display = 'block';
+        } else if (activeStep > 2 && i < activeStep && i <= activeStep - 3) {
+          connectorArray[i].style.display = 'none';
+        }
+        if (activeStep > 4 && i < activeStep && i < activeStep - 2) {
+          connectorArray[i].style.display = 'none';
+        }
+        if (activeStep > 4 && activeStep > connectorArray.length) {
+          connectorArray[connectorArray.length - 2].style.display = 'block';
+        }
+        if (
+          activeStep <= 4 &&
+          activeStep > connectorArray.length &&
+          connectorArray.length >= 2 &&
+          connectorArray.length < 4
+        ) {
+          connectorArray[connectorArray.length - 2].style.display = 'block';
+        }
+      }
     }
   };
-
   useEffect(() => {
     handleStepperSteps();
   }, [activeStep, stepperRef]);
 
+  const onChangeField = (
+    e:
+      | ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string | string[]>
+  ) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
   const renderField = (question: Question) => {
-    const { type, validation, options = [] } = question;
-    console.log({ type, options });
-    switch (type) {
-      case 'freeForm':
-        return <TextField label='freeForm' required={validation.required} />;
-      case 'toggle':
-        const label = { inputProps: { 'aria-label': 'Switch demo' } };
-        return <Switch {...label} defaultChecked />;
-        break;
-      case 'singleSelection':
-        return (
-          options.length > 0 && <CustomSelect options={options} {...props} />
-        );
-        break;
-      case 'multipleSelection':
-        return (
-          options.length > 0 && <MultiSelect options={options} {...props} />
-        );
-        break;
+    const { label, type, validation, options = [], prompt } = question;
+    if (type === 'freeForm') {
+      return (
+        <>
+          <TextField
+            label={label}
+            name={label}
+            value={state[label!] || ''}
+            required={validation.required}
+            className={textField}
+            onChange={(e) => {
+              onChangeField(e);
+            }}
+            size='small'
+            error={!!errors[label!]}
+          />
+          {errors[label!] && (
+            <FormHelperText className={errorMsg} error>
+              {errors[label!]}
+            </FormHelperText>
+          )}
+        </>
+      );
+    } else if (type === 'toggle') {
+      // let label = { inputProps: { 'aria-label': 'Switch demo' } };
+      return (
+        label && (
+          <>
+            <div className={toggleHolder}>
+              <Switch
+                name={label}
+                checked={state[label!] || false}
+                onChange={(e) => {
+                  onChangeField(e);
+                }}
+              />
+              <p>{prompt}</p>
+            </div>
+            {errors[label!] && (
+              <FormHelperText>{errors[label!]}</FormHelperText>
+            )}
+          </>
+        )
+      );
+    } else if (type === 'singleSelection') {
+      return (
+        options.length > 0 && (
+          <CustomSelect
+            options={options}
+            showBorder
+            {...props}
+            name={label}
+            value={state[label!] || ''}
+            error={!!errors[label!]}
+            errMsg={errors[label!]}
+            onChange={(e) => {
+              onChangeField(e);
+            }}
+          />
+        )
+      );
+    } else if (type === 'multipleSelection') {
+      const myLabel = { inputProps: { 'aria-label': `${question.label}` } };
+      return (
+        options.length > 0 &&
+        question?.label && (
+          <MultiSelect
+            name={label}
+            options={options}
+            label={myLabel}
+            value={state[label!] || []}
+            error={!!errors[label!]}
+            errMsg={errors[label!]}
+            onChange={(e) => {
+              onChangeField(e);
+            }}
+            showBorder
+            {...props}
+          />
+        )
+      );
     }
   };
   return (
@@ -219,13 +353,18 @@ const VerticalStepper: React.FC<Props> = ({
                   </span>
                   <div className={labelText}>
                     {step.label}
-                    {step?.prompt && (
+                    {/* {step?.prompt && (
                       <span className={labelDescription}>{step.prompt}</span>
-                    )}
+                    )} */}
                   </div>
                 </StepLabel>
                 <StepContent className={stepContent}>
-                  <Typography>{renderField(step)}</Typography>
+                  {step?.prompt && step.type !== 'toggle' && (
+                    <div className='prompt'>
+                      <p>{step.prompt}</p>
+                    </div>
+                  )}
+                  <div className='fieldWrap'>{renderField(step)}</div>
                   <Box sx={{ mb: 2 }}>
                     <div className={btnWrap}>
                       <Button

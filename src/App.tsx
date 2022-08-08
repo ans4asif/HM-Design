@@ -34,7 +34,8 @@ function App() {
         label: 'question1',
         instructions: 'This question is about you',
         type: 'freeForm',
-        prompt: 'What is your name?',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
         validation: {
           required: true,
           maxLength: 5,
@@ -45,9 +46,10 @@ function App() {
         label: 'question2',
         instructions: 'This question is about you',
         type: 'toggle',
-        prompt: 'What is your name?',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
         validation: {
-          required: true,
+          required: false,
         },
       },
 
@@ -55,6 +57,8 @@ function App() {
         uuid: 'question3',
         label: 'question3',
         instructions: 'This question is single select',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
         type: 'singleSelection',
         options: [
           {
@@ -79,6 +83,8 @@ function App() {
         label: 'question4',
         instructions: 'This question is multiselect ',
         type: 'multipleSelection',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
         options: [
           {
             label: 'option1',
@@ -99,14 +105,68 @@ function App() {
           maxItems: 3,
         },
       },
+      {
+        uuid: 'question5',
+        label: 'question5',
+        instructions: 'This question is about you',
+        type: 'freeForm',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
+        validation: {
+          required: true,
+          maxLength: 5,
+        },
+      },
+      {
+        uuid: 'question6',
+        label: 'question6',
+        instructions: 'This question is about you',
+        type: 'freeForm',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
+        validation: {
+          required: true,
+          maxLength: 5,
+        },
+      },
+      {
+        uuid: 'question7',
+        label: 'question7',
+        instructions: 'This question is about you',
+        type: 'freeForm',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
+        validation: {
+          required: true,
+          maxLength: 5,
+        },
+      },
+      {
+        uuid: 'question8',
+        label: 'question8',
+        instructions: 'This question is about you',
+        type: 'freeForm',
+        prompt:
+          'What is your name? How are you doing? Do you have any questions?',
+        validation: {
+          required: true,
+          maxLength: 5,
+        },
+      },
     ],
+  };
+  const handleFinish = (val: any) => {
+    console.log({ val });
   };
   return (
     <>
       <ThemeProvider theme={theme}>
         <div className='App'>
           <div className='container'>
-            <VerticalStepper questionnaire={myQuestionaire} />
+            <VerticalStepper
+              questionnaire={myQuestionaire}
+              onFinish={handleFinish}
+            />
             {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}

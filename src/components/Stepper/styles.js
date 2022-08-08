@@ -19,15 +19,20 @@ const useStyles = (props) => {
       '& .MuiStepConnector-line': {
         border: 'none !important',
       },
+      '& p': {
+        fontFamily: 'Sofia Pro, sans-serif',
+      },
     },
     stepp: {
-      '& .MuiStepLabel-root': {
-        padding: '0px',
-      },
+      maxWidth: '300px',
+      // '& .MuiStepLabel-root': {
+      //   padding: '0px',
+      // },
       '& .MuiStepLabel-iconContainer text': {
         display: 'none',
       },
       '& .MuiStepLabel-root': {
+        padding: '0px',
         '& .MuiStepLabel-iconContainer': {
           '& .MuiSvgIcon-root-MuiStepIcon-root.Mui-active': {
             border: '3px solid blue !important',
@@ -112,6 +117,20 @@ const useStyles = (props) => {
       '& .MuiStepConnector-line': {
         opacity: '0.12 !important',
       },
+      '& .prompt': {
+        textAlign: 'left',
+        fontFamily: 'Sofia Pro',
+        '& p': {
+          marginBottom: '0px',
+          fontSize: '14px',
+          lineHeight: '20px',
+        },
+      },
+      '& .fieldWrap': {
+        marginTop: '15px',
+        marginBottom: '10px',
+        textAlign: 'left',
+      },
     },
     btnWrap: {
       display: 'flex',
@@ -159,6 +178,28 @@ const useStyles = (props) => {
         right: '0px',
         bottom: '0px',
       },
+    },
+    //Text Field Styles
+    textField: {
+      '& input': {
+        width: '100%',
+        minWidth: '210px',
+      },
+    },
+    //Toggle Switch Styles
+    toggleHolder: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      '& p': {
+        margin: '0px',
+        fontSize: '14px',
+        lineHeight: '20px',
+        textAlign: 'left',
+      },
+    },
+    errorMsg: {
+      color: 'red',
     },
   }));
 };
