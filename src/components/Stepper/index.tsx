@@ -138,7 +138,6 @@ const VerticalStepper: React.FC<Props> = ({
     setState({});
     setErrors({});
   };
-
   const handleStepperSteps = () => {
     if (stepperRef?.current) {
       const connectors = stepperRef?.current;
@@ -174,9 +173,10 @@ const VerticalStepper: React.FC<Props> = ({
         childrenArray.forEach((step, index) => {
           if (index < activeStep - 2 || (index > activeStep && index > 2)) {
             step.style.display = 'none';
-          } else if (index >= activeStep - 2) {
-            step.style.display = 'block';
-          } else if (activeStep === questions.length) {
+          } else if (
+            index >= activeStep - 2 ||
+            activeStep === questions.length
+          ) {
             step.style.display = 'block';
           }
         });
@@ -202,34 +202,31 @@ const VerticalStepper: React.FC<Props> = ({
         }
       }
       for (let i = 0; i < connectorArray.length; i++) {
-        if (activeStep < 2 && i >= 4) {
-          connectorArray[i].style.display = 'none';
-        } else if (activeStep === 2 && i >= 2) {
-          connectorArray[i].style.display = 'none';
-        } else if (activeStep > 2 && i >= activeStep) {
+        if (
+          (activeStep < 2 && i >= 4) ||
+          (activeStep === 2 && i >= 2) ||
+          (activeStep > 2 && i >= activeStep) ||
+          (activeStep > 2 && i < activeStep && i <= activeStep - 3) ||
+          (activeStep > 4 && i < activeStep && i < activeStep - 2)
+        ) {
           connectorArray[i].style.display = 'none';
         } else if (activeStep > 2 && i < activeStep && i >= 2) {
           connectorArray[i].style.display = 'block';
-        } else if (activeStep > 2 && i < activeStep && i <= activeStep - 3) {
-          connectorArray[i].style.display = 'none';
         }
-        if (activeStep > 4 && i < activeStep && i < activeStep - 2) {
-          connectorArray[i].style.display = 'none';
-        }
-        if (activeStep > 4 && activeStep > connectorArray.length) {
-          connectorArray[connectorArray.length - 2].style.display = 'block';
-        }
+
         if (
-          activeStep <= 4 &&
-          activeStep > connectorArray.length &&
-          connectorArray.length >= 2 &&
-          connectorArray.length < 4
+          (activeStep > 4 && activeStep > connectorArray.length) ||
+          (activeStep <= 4 &&
+            activeStep > connectorArray.length &&
+            connectorArray.length >= 2 &&
+            connectorArray.length < 4)
         ) {
           connectorArray[connectorArray.length - 2].style.display = 'block';
         }
       }
     }
   };
+
   useEffect(() => {
     handleStepperSteps();
   }, [activeStep, stepperRef]);
@@ -328,7 +325,7 @@ const VerticalStepper: React.FC<Props> = ({
   };
   return (
     <>
-      {questions?.length && (
+      {!!questions?.length && (
         <Box sx={{ maxWidth: 400 }} className={stepperBox}>
           <Stepper
             activeStep={activeStep}
