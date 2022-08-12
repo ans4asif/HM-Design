@@ -231,13 +231,32 @@ const VerticalStepper: React.FC<Props> = ({
     handleStepperSteps();
   }, [activeStep, stepperRef]);
 
+  useEffect(() => {
+    if (questions.length) {
+      const toggleQuestions = questions
+        .filter((ques) => ques.type === 'toggle')
+        ?.map((ques) => ques.label);
+      if (toggleQuestions.length) {
+        let obj: any = {};
+        toggleQuestions.forEach((label: any) => {
+          obj[label] = false;
+        });
+        setState({ ...state, ...obj });
+      }
+    }
+  }, []);
   const onChangeField = (
     e:
       | ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string | string[]>
+      | SelectChangeEvent<string | string[]>,
+    type: string
   ) => {
     const { name, value } = e.target;
-    setState({ ...state, [name]: value });
+    if (type === 'toggle') {
+      setState({ ...state, [name]: state[name] === false ? true : false });
+    } else {
+      setState({ ...state, [name]: value });
+    }
   };
   const renderField = (question: Question) => {
     const { label, type, validation, options = [], prompt } = question;
@@ -251,7 +270,7 @@ const VerticalStepper: React.FC<Props> = ({
             required={validation.required}
             className={textField}
             onChange={(e) => {
-              onChangeField(e);
+              onChangeField(e, type);
             }}
             size='small'
             error={!!errors[label!]}
@@ -264,16 +283,16 @@ const VerticalStepper: React.FC<Props> = ({
         </>
       );
     } else if (type === 'toggle') {
-      // let label = { inputProps: { 'aria-label': 'Switch demo' } };
       return (
         label && (
           <>
             <div className={toggleHolder}>
               <Switch
                 name={label}
-                checked={state[label!] || false}
+                checked={state[label!]}
+                // value={state[label!]}
                 onChange={(e) => {
-                  onChangeField(e);
+                  onChangeField(e, type);
                 }}
               />
               <p>{prompt}</p>
@@ -296,7 +315,7 @@ const VerticalStepper: React.FC<Props> = ({
             error={!!errors[label!]}
             errMsg={errors[label!]}
             onChange={(e) => {
-              onChangeField(e);
+              onChangeField(e, type);
             }}
           />
         )
@@ -314,7 +333,7 @@ const VerticalStepper: React.FC<Props> = ({
             error={!!errors[label!]}
             errMsg={errors[label!]}
             onChange={(e) => {
-              onChangeField(e);
+              onChangeField(e, type);
             }}
             showBorder
             {...props}
