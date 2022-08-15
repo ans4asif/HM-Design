@@ -9,6 +9,7 @@ import useStyles from './App.styles';
 import MenuHolder from './components/MenuHolder';
 import VerticalStepper from './components/Stepper';
 import { Questionnaire } from './components/Stepper/types';
+import SubmissionConfirmation from './components/Stepper/SubmissionConfirmation';
 function App() {
   const [mode, setMode] = useState('light');
   const theme = createTheme(MyTheme(mode));
@@ -166,7 +167,14 @@ function App() {
             <VerticalStepper
               questionnaire={myQuestionaire}
               onFinish={handleFinish}
-            />
+              submitBtnText='submit another response'
+            >
+              <SubmissionConfirmation>
+                <div style={{ marginBottom: '10px' }}>
+                  children will be rendered here
+                </div>
+              </SubmissionConfirmation>
+            </VerticalStepper>
             {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}

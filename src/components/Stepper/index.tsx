@@ -11,63 +11,27 @@ import useStyles from './styles';
 import { Question, Questionnaire, validation } from './types';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import CustomSelect from '../CustomSelect';
 import MultiSelect from '../CustomSelect/MultiSelect';
 import { FormHelperText } from '@mui/material';
-
-const steps: Array<{
-  label: string;
-  labelDescription?: string;
-  description: string;
-}> = [
-  {
-    label: 'Select campaign settings',
-    // labelDescription: 'Select campaign settings and template',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: 'Create an ad group',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    label: 'Create an ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Create new ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Create another ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-];
 
 type Props = {
   variant?: 'dark' | 'light';
   questionnaire: Questionnaire;
   onFinish: (values: any) => void;
+  children?: React.ReactNode | JSX.Element;
+  submitBtnText: string;
 };
-const VerticalStepper: React.FC<Props> = ({
+const VerticalStepper = ({
   variant,
   onFinish = () => {},
   questionnaire,
+  children,
+  submitBtnText,
   ...props
-}) => {
-  const [activeStep, setActiveStep] = useState(0);
+}: Props) => {
+  const [activeStep, setActiveStep] = useState(8);
   const [errors, setErrors] = useState<any>({});
   const [state, setState] = useState<any>({});
   const stepperRef = useRef<HTMLDivElement>(null);
@@ -416,8 +380,9 @@ const VerticalStepper: React.FC<Props> = ({
                 request sent! view updates in the{' '}
                 <span onClick={() => {}}>request tracking page</span>
               </Typography>
+              {children}
               <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                submit another response
+                {submitBtnText}
               </Button>
             </Paper>
           )}
