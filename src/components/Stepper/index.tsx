@@ -26,7 +26,7 @@ type Props = {
   variant?: 'dark' | 'light';
   questionnaire: Questionnaire;
   onFinish: (values: any) => void;
-  children: ReactElement | string;
+  children: ReactElement | string | string[];
   submitBtnText: string;
 };
 const VerticalStepper = ({
@@ -37,7 +37,7 @@ const VerticalStepper = ({
   submitBtnText,
   ...props
 }: Props) => {
-  const [activeStep, setActiveStep] = useState(8);
+  const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState<any>({});
   const [state, setState] = useState<any>({});
   const stepperRef = useRef<HTMLDivElement>(null);
