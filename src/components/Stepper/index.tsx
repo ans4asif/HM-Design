@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  ChangeEvent,
+  ReactElement,
+} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -20,7 +26,7 @@ type Props = {
   variant?: 'dark' | 'light';
   questionnaire: Questionnaire;
   onFinish: (values: any) => void;
-  children?: React.ReactNode | JSX.Element;
+  children: ReactElement | string;
   submitBtnText: string;
 };
 const VerticalStepper = ({
@@ -376,10 +382,6 @@ const VerticalStepper = ({
               sx={{ p: 3 }}
               className={finishTextHolder}
             >
-              <Typography>
-                request sent! view updates in the{' '}
-                <span onClick={() => {}}>request tracking page</span>
-              </Typography>
               {children}
               <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
                 {submitBtnText}
