@@ -47,6 +47,7 @@ export const MyTheme = (mode = 'light') => {
       readOnly: {
         light: {
           secondary: 'rgba(2, 20, 52, 0.12)',
+          hover: '#02143414',
           secondaryHover: '#374761',
           on_surface_variant: 'rgba(28, 27, 30, 0.08)',
         },
