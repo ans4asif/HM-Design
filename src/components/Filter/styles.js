@@ -80,6 +80,7 @@ const useStyles = (props) => {
     },
     list: {
       listStyle: 'none',
+      position: 'relative',
       paddingLeft: '0px',
       maxHeight: '300px',
       overflowX: 'hidden',
@@ -98,7 +99,7 @@ const useStyles = (props) => {
       },
 
       '& li': {
-        position: 'relative',
+        // position: 'relative',
         minWidth: '260px',
         padding: '10px 8px',
         '& span': {
@@ -151,13 +152,13 @@ const useStyles = (props) => {
       },
     },
     itemHolder: {
-      //   position: 'relative',
+      position: 'relative',
     },
     //helper class
     submenu: {
       position: 'absolute',
-      right: '0px',
-      left: '100px',
+      // left: '290px',
+      // top: '0',
       zIndex: '9999',
     },
     opacity0: {
