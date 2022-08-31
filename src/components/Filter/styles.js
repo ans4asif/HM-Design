@@ -80,7 +80,7 @@ const useStyles = (props) => {
     },
     list: {
       listStyle: 'none',
-      position: 'relative',
+      // position: 'relative',
       paddingLeft: '0px',
       maxHeight: '300px',
       overflowX: 'hidden',
@@ -108,9 +108,12 @@ const useStyles = (props) => {
         display: 'flex',
         flexDirection: 'column',
         // gap: '10px',
-        cursor: 'pointer',
+        // cursor: 'pointer',
         '&:hover': {
           background: `${theme.palette.readOnly.light.hover} !important`,
+        },
+        '& [data-testid="ChevronRightIcon"]': {
+          cursor: 'pointer',
         },
       },
     },
@@ -152,17 +155,23 @@ const useStyles = (props) => {
       },
     },
     itemHolder: {
-      position: 'relative',
+      // position: 'relative',
     },
     //helper class
     submenu: {
-      position: 'absolute',
-      // left: '290px',
-      // top: '0',
+      // position: 'absolute',
+      // top: '118px',
+      // left: '497px',
       zIndex: '9999',
     },
     opacity0: {
       opacity: '0 !important',
+    },
+    dNone: {
+      display: 'none',
+    },
+    dBlock: {
+      display: 'block',
     },
   }));
 };

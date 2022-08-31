@@ -16,6 +16,7 @@
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "evergreen-ui": "^6.9.4",
+    "material-ui-nested-menu-item": "^1.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-loading-skeleton": "^3.0.3",
