@@ -208,6 +208,14 @@ const Filter = () => {
                 open={showSubMenu[index] ?? false}
                 anchorEl={anchorEl}
                 placement={placement}
+                modifiers={[
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, 30],
+                    },
+                  },
+                ]}
                 transition
               >
                 {({ TransitionProps }) => (
