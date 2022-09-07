@@ -107,14 +107,22 @@ const useStyles = (props) => {
         },
         display: 'flex',
         flexDirection: 'column',
-        // gap: '10px',
-        // cursor: 'pointer',
+        cursor: 'pointer',
         '&:hover': {
           background: `${theme.palette.readOnly.light.hover} !important`,
+          '& .MuiSvgIcon-root':{
+              color:theme.palette.light.on_surface
+            
+          },
         },
         '& [data-testid="ChevronRightIcon"]': {
           cursor: 'pointer',
         },
+        '& .activeLi':{
+          '& .MuiSvgIcon-root':{
+            color:theme.palette.light.on_surface
+          
+        }        }
       },
     },
     filterItem: {
@@ -135,6 +143,13 @@ const useStyles = (props) => {
     textHolder: {
       display: 'flex !important',
       gap: '8px',
+      '& .MuiSvgIcon-root':{
+        color:theme.palette.readOnly.light.on_surface_variant,
+      
+      },
+      '& span':{
+        color:theme.palette.light.on_surface
+      }
     },
     btnTextField: {
       background: 'transparent',

@@ -32,77 +32,29 @@ const Filter = () => {
     })();
     type SelectedItem = {
         parent: string;
-        items: string[];
+        value: string;
+        label: string;
+        active?: boolean;
     };
     const listRef = useRef(null);
+    const checkIconRef = useRef(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean[]>([]);
     const [selectedSubItems, setSelectedSubItems] = useState<SelectedItem[]>([]);
+    const [activeSubItems, setActiveSubItems] = useState<SelectedItem[]>([]);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [anchorElBtn, setAnchorElBtn] = useState<null | HTMLElement>(null);
-    const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState<PopperPlacementType>();
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleClick = (event: any) => {
-        console.log('handleclick', {event: event});
+        console.log('handleclick', {event: event.target});
         setAnchorEl(event.target);
         // setOpen((prev) => placement !== newPlacement || !prev);
         setPlacement('right-start');
     };
     console.log({anchorEl, placement});
+
     const items = [
-        {
-            id: 1,
-            label: 'data source',
-            value: 'data source',
-            subItems: [
-                {label: 'filter1', value: 'filter1'},
-                {label: 'filter2', value: 'filter2'},
-                {label: 'filter3', value: 'filter3'},
-            ],
-        },
-        {
-            id: 2,
-            label: 'connections',
-            value: 'connections',
-            subItems: [
-                {label: 'filter1', value: 'filter1'},
-                {label: 'filter2', value: 'filter2'},
-                {label: 'filter3', value: 'filter3'},
-            ],
-        },
-        {
-            id: 3,
-            label: 'tempratures',
-            value: 'tempratures',
-            subItems: [
-                {label: 'filter1', value: 'filter1'},
-                {label: 'filter2', value: 'filter2'},
-                {label: 'filter3', value: 'filter3'},
-            ],
-        },
-        {
-            id: 4,
-            label: 'tempratures',
-            value: 'tempratures',
-            subItems: [
-                {label: 'filter1', value: 'filter1'},
-                {label: 'filter2', value: 'filter2'},
-                {label: 'filter3', value: 'filter3'},
-            ],
-        },
-        {
-            id: 5,
-            label: 'tempratures',
-            value: 'tempratures',
-            subItems: [
-                {label: 'filter1', value: 'filter1'},
-                {label: 'filter2', value: 'filter2'},
-                {label: 'filter3', value: 'filter3'},
-            ],
-        },
-    ];
-    const items2 = [
         {
             categoryId: 'data-source',
             name: 'data source',
@@ -136,15 +88,61 @@ const Filter = () => {
 
     useEffect(() => {}, []);
     const handleSubMenu = (e: any, item: any, index: any) => {
+        console.log({checkIconRef: checkIconRef, nim: e});
         const arr: any = [];
         arr[index] = !showSubMenu[index];
         handleClick(e);
         setShowSubMenu(arr);
     };
     const handleSelectedSubItems = (item: any, subItem: any, index: any) => {
-        console.log({item, subItem, index});
+        console.log({item, subItem, index, selectedSubItems});
+        const exists = selectedSubItems.filter(val => item.categoryId === val.parent && subItem.value === val.value)[0];
+        if (!exists) {
+            setSelectedSubItems(prev => [
+                ...prev,
+                {parent: item.categoryId, label: subItem.label, value: subItem.value},
+            ]);
+        } else {
+            const filtered = selectedSubItems.filter(({value}) => value !== subItem.value);
+            console.log('in else', {filtered});
+            if (!filtered.length) {
+                setSelectedSubItems([]);
+            } else {
+                setSelectedSubItems(filtered);
+            }
+        }
     };
 
+    const isSelected = (subItem: any) => {
+        const exists = selectedSubItems.filter(({value}) => value === subItem.value)[0];
+        if (exists) {
+            return true;
+        }
+        return false;
+    };
+    const handleUpdateMenu = () => {};
+    const handleUpdateSubMenu = (item: any) => {
+        const subItems = selectedSubItems.filter(({parent}) => item.categoryId === parent);
+        const existingActiveSubItems = activeSubItems.filter(({parent}) =>
+            subItems.map(({parent}) => parent).includes(parent)
+        );
+        if (subItems.length) {
+            console.log('if subItemz');
+            const active_arr = subItems.map(item => ({...item, active: true}));
+            setActiveSubItems(prev => [...prev, ...active_arr]);
+        } else {
+            console.log('else subItemz');
+
+            const existing = activeSubItems.filter(val => item.categoryId === val.parent)?.map(({value}) => value);
+            if (existing.length) {
+                const newItems = activeSubItems.filter(({value}) => !existing.includes(value));
+                if (newItems.length) {
+                    setActiveSubItems(newItems);
+                }
+            }
+        }
+    };
+    console.log({activeSubItems});
     const handleBtnClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElBtn(anchorElBtn ? null : event.currentTarget);
         setShowDropdown(prev => !prev);
@@ -159,12 +157,12 @@ const Filter = () => {
             <Popper
                 open={showDropdown ?? false}
                 anchorEl={anchorElBtn}
-                placement={'left'}
+                placement={'bottom'}
                 modifiers={[
                     {
                         name: 'offset',
                         options: {
-                            offset: [10, 10],
+                            offset: [10, 30],
                         },
                     },
                 ]}>
@@ -180,16 +178,15 @@ const Filter = () => {
                         <ul className={list} ref={listRef}>
                             {items.map((item, index) => (
                                 <div className={itemHolder}>
-                                    <li>
+                                    <li onClick={e => handleSubMenu(e, item, index)}>
                                         <div className={filterItem}>
                                             <span className={textHolder}>
                                                 <CheckIcon fontSize="small" />
-                                                <span>{item.label}</span>
+                                                <span>{item.name}</span>
                                             </span>
-                                            <ChevronRightIcon
-                                                fontSize="small"
-                                                onClick={e => handleSubMenu(e, item, index)}
-                                            />
+                                            <span>
+                                                <ChevronRightIcon fontSize="small" />
+                                            </span>
                                         </div>
                                         <div className={appliedFilters}>
                                             <span>(filter1,filter2,filter3,filter2,filter3,filter2,filter3)</span>
@@ -211,46 +208,48 @@ const Filter = () => {
                                             offset: [0, 30],
                                         },
                                     },
-                                ]}
-                                transition>
-                                {({TransitionProps}) => (
-                                    <Fade {...TransitionProps} timeout={350}>
-                                        <div className={clsx([dropDown, submenu])} id="item">
-                                            <div className={header}>
-                                                <span onClick={() => setShowSubMenu([])}>
-                                                    <ChevronLeftIcon fontSize="small" />
-                                                </span>
-                                                {item.label}
-                                                <button className={btnTextField}>All</button>
-                                            </div>
-                                            <ul className={list}>
-                                                {item.subItems.map((subItem, key) => (
-                                                    <li
-                                                        onClick={() => handleSelectedSubItems(item, subItem, key)}
-                                                        key={key}>
-                                                        <div className={filterItem}>
-                                                            <span className={textHolder}>
-                                                                <CheckIcon fontSize="small" />
-                                                                <span> {subItem.label}</span>
-                                                            </span>
-                                                            <ChevronRightIcon fontSize="small" />
-                                                        </div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            <div className={btnHolder}>
-                                                <Button variant="contained" fullWidth>
-                                                    Update View
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </Fade>
-                                )}
+                                ]}>
+                                <div className={clsx([dropDown, submenu])} id="item">
+                                    <div className={header}>
+                                        <span onClick={() => setShowSubMenu([])}>
+                                            <ChevronLeftIcon fontSize="small" />
+                                        </span>
+                                        {item.name}
+                                        <button className={btnTextField}>All</button>
+                                    </div>
+                                    <ul className={list}>
+                                        {item.filters.map((subItem, key) => (
+                                            <li onClick={() => handleSelectedSubItems(item, subItem, key)} key={key}>
+                                                <div className={filterItem}>
+                                                    <span
+                                                        className={clsx([
+                                                            textHolder,
+                                                            isSelected(subItem) ? 'activeLi' : '',
+                                                        ])}>
+                                                        <CheckIcon fontSize="small" />
+                                                        <span> {subItem.label}</span>
+                                                    </span>
+                                                    {/* <ChevronRightIcon fontSize="small" /> */}
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <div className={btnHolder}>
+                                        <Button
+                                            variant="contained"
+                                            fullWidth
+                                            onClick={() => {
+                                                handleUpdateSubMenu(item);
+                                            }}>
+                                            Update View
+                                        </Button>
+                                    </div>
+                                </div>
                             </Popper>
                         ))}
                     </div>
                     <div className={btnHolder}>
-                        <Button variant="contained" fullWidth>
+                        <Button variant="contained" fullWidth onClick={handleUpdateMenu}>
                             Update View
                         </Button>
                     </div>
