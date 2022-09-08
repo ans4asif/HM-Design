@@ -6,12 +6,14 @@ import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 // import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Popper, {PopperPlacementType} from '@mui/material/Popper';
-import {Button, Fade} from '@mui/material';
-import Box from '@mui/material/Box';
+import {Button} from '@mui/material';
+import {ActiveSubItems, Props, SelectedItem} from './types';
+
 const clsx = (classes: Array<any>) => {
     return classes.join(' ');
 };
-const Filter = () => {
+
+const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
     const btnActive = true;
     const {
         filterBtn,
@@ -30,17 +32,12 @@ const Filter = () => {
     } = useStyles({
         btnActive,
     })();
-    type SelectedItem = {
-        parent: string;
-        value: string;
-        label: string;
-        active?: boolean;
-    };
+
     const listRef = useRef(null);
     const checkIconRef = useRef(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean[]>([]);
     const [selectedSubItems, setSelectedSubItems] = useState<SelectedItem[]>([]);
-    const [activeSubItems, setActiveSubItems] = useState<SelectedItem[]>([]);
+    const [activeSubItems, setActiveSubItems] = useState<ActiveSubItems[]>([]);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [anchorElBtn, setAnchorElBtn] = useState<null | HTMLElement>(null);
     const [placement, setPlacement] = useState<PopperPlacementType>();
@@ -49,42 +46,9 @@ const Filter = () => {
     const handleClick = (event: any) => {
         console.log('handleclick', {event: event.target});
         setAnchorEl(event.target);
-        // setOpen((prev) => placement !== newPlacement || !prev);
         setPlacement('right-start');
     };
     console.log({anchorEl, placement});
-
-    const items = [
-        {
-            categoryId: 'data-source',
-            name: 'data source',
-            filters: [
-                {
-                    label: 'crowdstrike fdr',
-                    value: '996599d1-2f4c-4bf9-a3c0-f8f4fc0e0d92',
-                },
-                {
-                    label: 'crowdstrike hosts',
-                    value: '30ba3d2c-ce43-400f-8c5a-c22bf96c59f9',
-                },
-            ],
-        },
-        {
-            categoryId: 'connections',
-            name: 'connections',
-            filters: [
-                {
-                    label: '(crowdstrike hosts)',
-                    value: '621050ba-7818-4d0c-a46f-7edf1c9bf3a0',
-                },
-                {
-                    label: 'crowdstrike-on-prem',
-                    value: '4f081a51-03f1-491b-971d-3874b0e28e09',
-                },
-            ],
-        },
-    ];
-    // const popover = document.getElementById('item');
 
     useEffect(() => {}, []);
     const handleSubMenu = (e: any, item: any, index: any) => {
@@ -95,7 +59,6 @@ const Filter = () => {
         setShowSubMenu(arr);
     };
     const handleSelectedSubItems = (item: any, subItem: any, index: any) => {
-        console.log({item, subItem, index, selectedSubItems});
         const exists = selectedSubItems.filter(val => item.categoryId === val.parent && subItem.value === val.value)[0];
         if (!exists) {
             setSelectedSubItems(prev => [
@@ -104,7 +67,6 @@ const Filter = () => {
             ]);
         } else {
             const filtered = selectedSubItems.filter(({value}) => value !== subItem.value);
-            console.log('in else', {filtered});
             if (!filtered.length) {
                 setSelectedSubItems([]);
             } else {
@@ -120,39 +82,74 @@ const Filter = () => {
         }
         return false;
     };
-    const handleUpdateMenu = () => {};
+    const handleUpdateMenu = () => {
+        setShowDropdown(false);
+        onChange(activeSubItems);
+    };
     const handleUpdateSubMenu = (item: any) => {
-        const subItems = selectedSubItems.filter(({parent}) => item.categoryId === parent);
-        const existingActiveSubItems = activeSubItems.filter(({parent}) =>
-            subItems.map(({parent}) => parent).includes(parent)
-        );
-        if (subItems.length) {
-            console.log('if subItemz');
-            const active_arr = subItems.map(item => ({...item, active: true}));
-            setActiveSubItems(prev => [...prev, ...active_arr]);
+        const subItems = selectedSubItems.filter(({parent}) => item.categoryId === parent)?.map(({value}) => value);
+        const existingActiveSubItems = activeSubItems.filter(({name}) => name === item.categoryId)[0];
+        if (!existingActiveSubItems?.selectedFilters?.length) {
+            //check in subItems
+            if (!subItems.length) {
+                //means set activesubitems that parent childs:[]
+                const new_active_sub_items = activeSubItems.filter(elem => elem.name !== item.categoryId);
+                setActiveSubItems(new_active_sub_items);
+            } else {
+                //set activesubitems childs that are in subItems
+                const new_active_sub_item = {name: item.categoryId, selectedFilters: subItems};
+                const new_active_sub_items = activeSubItems.filter(elem => elem.name !== item.categoryId);
+                setActiveSubItems([...new_active_sub_items, new_active_sub_item]);
+            }
         } else {
-            console.log('else subItemz');
-
-            const existing = activeSubItems.filter(val => item.categoryId === val.parent)?.map(({value}) => value);
-            if (existing.length) {
-                const newItems = activeSubItems.filter(({value}) => !existing.includes(value));
-                if (newItems.length) {
-                    setActiveSubItems(newItems);
-                }
+            //setActive sub items childs subItems[]
+            const active_childs = existingActiveSubItems.selectedFilters.filter(val => subItems.includes(val));
+            const new_active_sub_items = activeSubItems.filter(elem => elem.name !== item.categoryId);
+            if (active_childs?.length) {
+                const new_active_sub_item = {name: item.categoryId, selectedFilters: active_childs};
+                setActiveSubItems([...new_active_sub_items, new_active_sub_item]);
+                setActiveSubItems([...new_active_sub_items, new_active_sub_item]);
+            } else {
+                setActiveSubItems(new_active_sub_items);
             }
         }
+        setShowSubMenu([]);
     };
-    console.log({activeSubItems});
     const handleBtnClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElBtn(anchorElBtn ? null : event.currentTarget);
         setShowDropdown(prev => !prev);
+    };
+
+    const getActiveSubItems = (categoryId: string) => {
+        const subItems = activeSubItems.filter(({name}) => name === categoryId)[0]?.selectedFilters;
+        if (subItems?.length) {
+            const childs = options.filter(item => item.categoryId === categoryId)[0]?.filters;
+            return childs
+                .filter(child => subItems.includes(child.value))
+                .map(({label}) => label)
+                .join(', ');
+        }
+        return null;
+    };
+
+    const handleClear = () => {
+        setSelectedSubItems([]);
+        setActiveSubItems([]);
+        setShowSubMenu([]);
+    };
+    const handleAll = (item: any) => {
+        const subItems = options.filter(elem => item.categoryId === elem.categoryId)[0]?.filters;
+        const curr_subItems = selectedSubItems.filter(val => !subItems.map(({value}) => value).includes(val.value));
+        const newSubItem = subItems.map(elem => ({...elem, parent: item.categoryId}));
+        setSelectedSubItems([...curr_subItems, ...newSubItem]);
+        return;
     };
     return (
         <div>
             <button className={filterBtn} disabled={false} onClick={handleBtnClick}>
                 <FilterListIcon />
                 <span>Filter</span>
-                {btnActive && <span className={activeDot}></span>}
+                {!!activeSubItems?.length && <span className={activeDot}></span>}
             </button>
             <Popper
                 open={showDropdown ?? false}
@@ -172,15 +169,21 @@ const Filter = () => {
                             <ChevronLeftIcon fontSize="small" />
                         </span>
                         filter
-                        <button className={btnTextField}>clear</button>
+                        <button className={btnTextField} onClick={handleClear}>
+                            clear
+                        </button>
                     </div>
                     <div>
                         <ul className={list} ref={listRef}>
-                            {items.map((item, index) => (
+                            {options.map((item, index) => (
                                 <div className={itemHolder}>
                                     <li onClick={e => handleSubMenu(e, item, index)}>
                                         <div className={filterItem}>
-                                            <span className={textHolder}>
+                                            <span
+                                                className={clsx([
+                                                    textHolder,
+                                                    getActiveSubItems(item.categoryId)?.length ? 'activeLi' : '',
+                                                ])}>
                                                 <CheckIcon fontSize="small" />
                                                 <span>{item.name}</span>
                                             </span>
@@ -189,14 +192,14 @@ const Filter = () => {
                                             </span>
                                         </div>
                                         <div className={appliedFilters}>
-                                            <span>(filter1,filter2,filter3,filter2,filter3,filter2,filter3)</span>
+                                            <span>{getActiveSubItems(item.categoryId)}</span>
                                         </div>
                                     </li>
                                 </div>
                             ))}
                         </ul>
 
-                        {items.map((item, index) => (
+                        {options.map((item, index) => (
                             <Popper
                                 open={showSubMenu[index] ?? false}
                                 anchorEl={anchorEl}
@@ -215,11 +218,21 @@ const Filter = () => {
                                             <ChevronLeftIcon fontSize="small" />
                                         </span>
                                         {item.name}
-                                        <button className={btnTextField}>All</button>
+                                        <button
+                                            className={btnTextField}
+                                            onClick={() => {
+                                                handleAll(item);
+                                            }}>
+                                            All
+                                        </button>
                                     </div>
                                     <ul className={list}>
                                         {item.filters.map((subItem, key) => (
-                                            <li onClick={() => handleSelectedSubItems(item, subItem, key)} key={key}>
+                                            <li
+                                                onClick={() => {
+                                                    handleSelectedSubItems(item, subItem, key);
+                                                }}
+                                                key={key}>
                                                 <div className={filterItem}>
                                                     <span
                                                         className={clsx([
@@ -229,7 +242,6 @@ const Filter = () => {
                                                         <CheckIcon fontSize="small" />
                                                         <span> {subItem.label}</span>
                                                     </span>
-                                                    {/* <ChevronRightIcon fontSize="small" /> */}
                                                 </div>
                                             </li>
                                         ))}
