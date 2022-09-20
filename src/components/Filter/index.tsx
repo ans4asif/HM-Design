@@ -33,8 +33,8 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
         btnActive,
     })();
 
-    const listRef = useRef(null);
-    const checkIconRef = useRef(null);
+    const dropDownRef = useRef(null);
+    const subMenuRef = useRef(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean[]>([]);
     const [selectedSubItems, setSelectedSubItems] = useState<SelectedItem[]>([]);
     const [activeSubItems, setActiveSubItems] = useState<ActiveSubItems[]>([]);
@@ -42,19 +42,19 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
     const [anchorElBtn, setAnchorElBtn] = useState<null | HTMLElement>(null);
     const [placement, setPlacement] = useState<PopperPlacementType>();
     const [showDropdown, setShowDropdown] = useState(false);
-
     const handleClick = (event: any) => {
-        console.log('handleclick', {event: event.target});
+        // console.log('handleclick', {event: event.target});
         setAnchorEl(event.target);
         setPlacement('right-start');
     };
-    console.log({anchorEl, placement});
+    // console.log({anchorEl, placement});
 
     useEffect(() => {}, []);
     const handleSubMenu = (e: any, item: any, index: any) => {
-        console.log({checkIconRef: checkIconRef, nim: e});
+        // console.log({checkIconRef: dropDownRef, nim: e});
         const arr: any = [];
-        arr[index] = !showSubMenu[index];
+        // arr[index] = !showSubMenu[index];
+        arr[index] = true;
         handleClick(e);
         setShowSubMenu(arr);
     };
@@ -89,6 +89,7 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
     const handleUpdateSubMenu = (item: any) => {
         const subItems = selectedSubItems.filter(({parent}) => item.categoryId === parent)?.map(({value}) => value);
         const existingActiveSubItems = activeSubItems.filter(({name}) => name === item.categoryId)[0];
+
         if (!existingActiveSubItems?.selectedFilters?.length) {
             //check in subItems
             if (!subItems.length) {
@@ -104,9 +105,11 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
         } else {
             //setActive sub items childs subItems[]
             const active_childs = existingActiveSubItems.selectedFilters.filter(val => subItems.includes(val));
+            // const new_active_childs=
             const new_active_sub_items = activeSubItems.filter(elem => elem.name !== item.categoryId);
             if (active_childs?.length) {
-                const new_active_sub_item = {name: item.categoryId, selectedFilters: active_childs};
+                // const new_active_sub_item = {name: item.categoryId, selectedFilters: active_childs};
+                const new_active_sub_item = {name: item.categoryId, selectedFilters: subItems};
                 setActiveSubItems([...new_active_sub_items, new_active_sub_item]);
                 setActiveSubItems([...new_active_sub_items, new_active_sub_item]);
             } else {
@@ -131,7 +134,6 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
         }
         return null;
     };
-
     const handleClear = () => {
         setSelectedSubItems([]);
         setActiveSubItems([]);
@@ -144,6 +146,21 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
         setSelectedSubItems([...curr_subItems, ...newSubItem]);
         return;
     };
+    const handleShowSubMenuHover = (e: any, item: any, index: any) => {
+        console.log({item});
+        const exists = selectedSubItems.filter(itm => itm?.value === item)[0];
+        console.log({exists});
+        if (!showSubMenu[index]) {
+            console.log('in if subhover');
+            const arr: any = [];
+            arr[index] = true;
+            setShowSubMenu(arr);
+        }
+    };
+    const onLeaveOptions = (e: any) => {
+        console.log({e});
+    };
+    // console.log({dropDownRef: dropDownRef.current, subMenuRef: subMenuRef.current});
     return (
         <div>
             <button className={filterBtn} disabled={false} onClick={handleBtnClick}>
@@ -174,10 +191,15 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
                         </button>
                     </div>
                     <div>
-                        <ul className={list} ref={listRef}>
+                        <ul className={list} ref={dropDownRef}>
                             {options.map((item, index) => (
                                 <div className={itemHolder}>
-                                    <li onClick={e => handleSubMenu(e, item, index)}>
+                                    <li
+                                        // onClick={e => handleSubMenu(e, item, index)}
+                                        onMouseEnter={e => {
+                                            console.log('onMouseenter');
+                                            handleSubMenu(e, item, index);
+                                        }}>
                                         <div className={filterItem}>
                                             <span
                                                 className={clsx([
@@ -208,13 +230,25 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
                                     {
                                         name: 'offset',
                                         options: {
-                                            offset: [0, 30],
+                                            offset: [0, 10],
                                         },
                                     },
                                 ]}>
-                                <div className={clsx([dropDown, submenu])} id="item">
+                                <div
+                                    ref={subMenuRef}
+                                    className={clsx([dropDown, submenu])}
+                                    id="item"
+                                    // onMouseEnter={e => {
+                                    //     console.log('on mouse enter');
+                                    //     handleShowSubMenuHover(e, item, index);
+                                    // }}
+                                    // onMouseLeave={e => {
+                                    //     console.log('on mouse leave submenu', {target: e.currentTarget});
+                                    //     setShowSubMenu([]);
+                                    // }}
+                                >
                                     <div className={header}>
-                                        <span onClick={() => setShowSubMenu([])}>
+                                        <span>
                                             <ChevronLeftIcon fontSize="small" />
                                         </span>
                                         {item.name}
@@ -230,8 +264,16 @@ const Filter: React.FC<Props> = ({onChange, options, ...props}) => {
                                         {item.filters.map((subItem, key) => (
                                             <li
                                                 onClick={() => {
+                                                    console.log('onclick');
+                                                    window.removeEventListener('mouseleave', () => {});
                                                     handleSelectedSubItems(item, subItem, key);
                                                 }}
+                                                // onMouseEnter={e => {
+                                                //     handleSubMenu(e, item, index);
+                                                // }}
+                                                // onMouseLeave={e => {
+                                                //     handleSubMenu(e, item, index);
+                                                // }}
                                                 key={key}>
                                                 <div className={filterItem}>
                                                     <span

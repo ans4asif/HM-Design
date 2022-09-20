@@ -110,10 +110,10 @@ const useStyles = (props) => {
         cursor: 'pointer',
         '&:hover': {
           background: `${theme.palette.readOnly.light.hover} !important`,
-          '& .MuiSvgIcon-root':{
-              color:theme.palette.light.on_surface
+          // '& .MuiSvgIcon-root':{
+          //     color:theme.palette.light.on_surface
             
-          },
+          // },
         },
         '& [data-testid="ChevronRightIcon"]': {
           cursor: 'pointer',

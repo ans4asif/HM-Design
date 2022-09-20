@@ -167,7 +167,7 @@ function App() {
             name: 'connections',
             filters: [
                 {
-                    label: '(crowdstrike hosts)',
+                    label: 'crowdstrike hosts2',
                     value: '621050ba-7818-4d0c-a46f-7edf1c9bf3a0',
                 },
                 {
