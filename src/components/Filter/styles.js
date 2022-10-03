@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = (props) => {
-  const { btnActive, variant } = props;
+  const { variant } = props;
   return makeStyles((theme) => ({
     filterBtn: {
       position: 'relative',
@@ -19,7 +19,7 @@ const useStyles = (props) => {
       lineHeight: '20px',
       textTransform: 'uppercase',
       background: 'transparent',
-      color: theme.palette.light.on_surface,
+      color:  theme.palette.light.on_surface,
       border: '1px solid transparent',
       borderRadius: '100px',
       outline: 'none',
@@ -31,9 +31,10 @@ const useStyles = (props) => {
           ' 0px 3px 5px rgba(110, 117, 130, 0.2), 0px 1px 1px rgba(110, 117, 130, 0.3)',
       },
       '&:focus': {
-        background: theme.palette.common.white,
-        boxShadow: 'none',
-        border: '1px solid #0088FF',
+        // background: theme.palette.common.white,
+        background: 'rgba(28, 27, 30, 0.15)',
+        boxShadow: '0px 3px 5px rgba(110, 117, 130, 0.2), 0px 1px 1px rgba(110, 117, 130, 0.3)',
+        // border: '1px solid #0088FF',
       },
       '&:disabled': {
         color: theme.palette.readOnly.light.on_surface_variant,
@@ -67,6 +68,8 @@ const useStyles = (props) => {
         '0px 8px 15px rgba(110, 117, 130, 0.15), 0px 1px 2px rgba(110, 117, 130, 0.3)',
       borderRadius: '3px',
       fontFamily: 'Sofia Pro',
+      color: variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface `important`,
+
     },
 
     header: {
@@ -77,6 +80,7 @@ const useStyles = (props) => {
       '& span:first-child': {
         cursor: 'pointer',
       },
+      background:variant==='dark' && theme.palette.readOnly.dark.on_surface,
     },
     list: {
       listStyle: 'none',
@@ -109,7 +113,7 @@ const useStyles = (props) => {
         flexDirection: 'column',
         cursor: 'pointer',
         '&:hover': {
-          background: `${theme.palette.readOnly.light.hover} !important`,
+          background: variant==='dark' ? theme.palette.readOnly.dark.on_surface :`${theme.palette.readOnly.light.hover} !important`,
           // '& .MuiSvgIcon-root':{
           //     color:theme.palette.light.on_surface
             
@@ -120,7 +124,7 @@ const useStyles = (props) => {
         },
         '& .activeLi':{
           '& .MuiSvgIcon-root':{
-            color:theme.palette.light.on_surface
+            color:variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface
           
         }        }
       },
@@ -137,7 +141,7 @@ const useStyles = (props) => {
       fontWeight: '400',
       fontSize: '14px',
       lineHeight: '20px',
-      color: theme.palette.light.on_surface_variant,
+      color: variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface_variant,
       wordBreak: 'break-all',
     },
     textHolder: {
@@ -148,12 +152,13 @@ const useStyles = (props) => {
       
       },
       '& span':{
-        color:theme.palette.light.on_surface
+        color: variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface
       }
     },
     btnTextField: {
+      paddingRight:'16px',
       background: 'transparent',
-      color: theme.palette.light.on_surface,
+      color: variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface,
       border: 'none',
       textTransform: 'uppercase',
       fontFamily: 'Sofia Pro',

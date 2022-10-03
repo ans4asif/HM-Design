@@ -151,6 +151,7 @@ function App() {
         {
             categoryId: 'data-source',
             name: 'data source',
+            multiSelect: true,
             filters: [
                 {
                     label: 'crowdstrike fdr',
@@ -165,6 +166,7 @@ function App() {
         {
             categoryId: 'connections',
             name: 'connections',
+            multiSelect: false,
             filters: [
                 {
                     label: 'crowdstrike hosts2',
@@ -196,7 +198,7 @@ function App() {
                 </div>
               </SubmissionConfirmation>
             </VerticalStepper> */}
-                        <Filter onChange={onFilterChange} options={items} />
+                        <Filter onChange={onFilterChange} options={items} variant="dark" />
                         {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}

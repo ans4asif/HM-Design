@@ -51,6 +51,9 @@ export const MyTheme = (mode = 'light') => {
           secondaryHover: '#374761',
           on_surface_variant: 'rgba(28, 27, 30, 0.08)',
         },
+        dark:{
+          on_surface:'rgba(247, 253, 249, 0.08)',
+        }
       },
       error: {
         light: 'rgba(255, 215, 215, 1)',
