@@ -107,6 +107,8 @@ const Filter: React.FC<MyProps> = ({onChange, options, variant}) => {
     };
     const handleUpdateMenu = () => {
         setShowDropdown(false);
+        setAnchorElBtn(null);
+        setAnchorEl(null);
         onChange(activeSubItems);
     };
     const handleUpdateSubMenu = (item: any) => {
@@ -140,6 +142,8 @@ const Filter: React.FC<MyProps> = ({onChange, options, variant}) => {
             }
         }
         setShowSubMenu([]);
+
+        setAnchorEl(null);
     };
     const handleBtnClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElBtn(anchorElBtn ? null : event.currentTarget);

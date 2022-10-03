@@ -198,7 +198,7 @@ function App() {
                 </div>
               </SubmissionConfirmation>
             </VerticalStepper> */}
-                        <Filter onChange={onFilterChange} options={items} variant="dark" />
+                        <Filter onChange={onFilterChange} options={items}  />
                         {/* <InputDropdown
               placeholder="clarisse.anne.medallo@pwc.com.ph"
               options={options}

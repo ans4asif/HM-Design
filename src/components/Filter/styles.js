@@ -68,7 +68,7 @@ const useStyles = (props) => {
         '0px 8px 15px rgba(110, 117, 130, 0.15), 0px 1px 2px rgba(110, 117, 130, 0.3)',
       borderRadius: '3px',
       fontFamily: 'Sofia Pro',
-      color: variant==='dark' ? theme.palette.dark.on_surface:theme.palette.light.on_surface `important`,
+      color: variant==='dark' ? `${theme.palette.dark.on_surface} !important`: `${theme.palette.light.on_surface} !important` ,
 
     },
 
